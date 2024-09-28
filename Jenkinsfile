@@ -6,6 +6,7 @@ pipeline {
         AWS_ACCOUNT_ID = 'AWS_ACCOUNT_ID'
         CREDENTIAL_ID = 'app-cluster'
         AWS_REGION = "us-east-1"
+        REPOSITORY_URI = '850995554565.dkr.ecr.us-east-1.amazonaws.com/rest-api'
         IMAGE_TAG = "${BUILD_NUMBER}"
         DOCKER_IMAGE = "${REPOSITORY_URI}:${IMAGE_TAG}"
 
@@ -15,14 +16,15 @@ pipeline {
         stage('Build, Tag, Login & Push Docker Image to ECR') {
             steps {
                 script {
-                    // Build the Docker image
-                    sh """
-                    docker build -t ${DOCKER_IMAGE} .
-                    """
-                    
+
                     // Login to ECR
                     sh """
                     aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${REPOSITORY_URI}
+                    """
+                    
+                    // Build the Docker image
+                    sh """
+                    docker build -t ${DOCKER_IMAGE} .
                     """
                     
                     // Push the Docker image to ECR
