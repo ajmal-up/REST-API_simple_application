@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+ name: rest-api
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rest-api-deployment
+  namespace: rest-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: rest-api-engine
+  template:
+    metadata:
+      labels:
+        component: rest-api-engine
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            component: rest-api-engine
+      containers:
+      - name: rest-api
+        # image name will update and tagged as per the build number
+        image: $REPOSITORY_URI:$IMAGE_TAG
+        imagePullPolicy: "Always"
+        ports:
+          - containerPort: 5000
