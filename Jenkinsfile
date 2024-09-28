@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         // Define environment variables
-        AWS_ACCOUNT_ID = 'AWS_ACCOUNT_ID'
+        SECRET_KEY = credentials('SECRET_KEY')
+        SECRET_ACCESS_KEY = credentials('SECRET_ACCESS_KEY')
         CREDENTIAL_ID = 'app-cluster'
         AWS_REGION = "us-east-1"
         REPOSITORY_URI = '850995554565.dkr.ecr.us-east-1.amazonaws.com/rest-api'
