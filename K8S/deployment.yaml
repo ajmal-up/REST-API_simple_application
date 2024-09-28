@@ -1,22 +1,22 @@
 apiVersion: v1
 kind: Namespace
 metadata:
- name: rest-api
+ name: sample-app
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: rest-api-deployment
-  namespace: rest-api
+  name: sample-app-deployment
+  namespace: sample-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      component: rest-api-engine
+      component: sample-app-engine
   template:
     metadata:
       labels:
-        component: rest-api-engine
+        component: sample-app-engine
     spec:
       topologySpreadConstraints:
       - maxSkew: 1
@@ -24,9 +24,9 @@ spec:
         whenUnsatisfiable: DoNotSchedule
         labelSelector:
           matchLabels:
-            component: rest-api-engine
+            component: sample-app-engine
       containers:
-      - name: rest-api
+      - name: sample-app
         # image name will update and tagged as per the build number
         image: $REPOSITORY_URI:$IMAGE_TAG
         imagePullPolicy: "Always"

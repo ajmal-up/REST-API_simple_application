@@ -1,8 +1,8 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: rest-api-ingress
-  namespace : rest-api
+  name: sample-app-ingress
+  namespace : sample-app
   annotations:
     kubernetes.io/ingress.class: alb
     alb.ingress.kubernetes.io/scheme: internet-facing
@@ -17,6 +17,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: rest-api-service
+            name: sample-app-service
             port:
               number: 80
